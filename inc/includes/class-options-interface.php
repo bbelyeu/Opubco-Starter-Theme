@@ -4,7 +4,7 @@
  * @author    Devin Price <devin@wptheming.com>
  * @license   GPL-2.0+
  * @link      http://wptheming.com
- * @copyright 2013 WP Theming
+ * @copyright 2010-2014 WP Theming
  */
 
 class Options_Framework_Interface {
@@ -37,17 +37,9 @@ class Options_Framework_Interface {
 	static function optionsframework_fields() {
 
 		global $allowedtags;
-		$optionsframework_settings = get_option( 'optionsframework' );
 
-		// Gets the unique option id
-		if ( isset( $optionsframework_settings['id'] ) ) {
-			$option_name = $optionsframework_settings['id'];
-		}
-		else {
-			$option_name = 'optionsframework';
-		};
-
-		$settings = get_option($option_name);
+		$option_name = Options_Framework::get_option_name();
+		$settings = get_option( $option_name );
 		$options = & Options_Framework::_optionsframework_options();
 
 		$counter = 0;
@@ -61,7 +53,8 @@ class Options_Framework_Interface {
 
 			// Wrap all options
 			if ( ( $value['type'] != "heading" ) && ( $value['type'] != "info" ) ) {
-
+				
+				if ( !isset( $value[ 'id' ] ) ) $value[ 'id' ] = '';
 				// Keep all ids lowercase with no spaces
 				$value['id'] = preg_replace('/[^a-zA-Z0-9._\-]/', '', strtolower($value['id']) );
 
@@ -109,6 +102,12 @@ class Options_Framework_Interface {
 				$explain_value = $value['desc'];
 			}
 
+			// Set the placeholder if one exists
+			$placeholder = '';
+			if ( isset( $value['placeholder'] ) ) {
+				$placeholder = ' placeholder="' . esc_attr( $value['placeholder'] ) . '"';
+			}
+
 			if ( has_filter( 'optionsframework_' . $value['type'] ) ) {
 				$output .= apply_filters( 'optionsframework_' . $value['type'], $option_name, $value, $val );
 			}
@@ -118,7 +117,7 @@ class Options_Framework_Interface {
 
 			// Basic text input
 			case 'text':
-				$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" type="text" value="' . esc_attr( $val ) . '" />';
+				$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" type="text" value="' . esc_attr( $val ) . '"' . $placeholder . ' />';
 				break;
 
 			// Password input
@@ -138,7 +137,7 @@ class Options_Framework_Interface {
 				}
 
 				$val = stripslashes( $val );
-				$output .= '<textarea id="' . esc_attr( $value['id'] ) . '" class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" rows="' . $rows . '">' . esc_textarea( $val ) . '</textarea>';
+				$output .= '<textarea id="' . esc_attr( $value['id'] ) . '" class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" rows="' . $rows . '"' . $placeholder . '>' . esc_textarea( $val ) . '</textarea>';
 				break;
 
 			// Select Box
@@ -383,7 +382,7 @@ class Options_Framework_Interface {
 					$output .= '<h4 class="heading">' . esc_html( $value['name'] ) . '</h4>' . "\n";
 				}
 				if ( isset( $value['desc'] ) ) {
-					$output .= apply_filters('of_sanitize_info', $value['desc'] ) . "\n";
+					$output .= $value['desc'] . "\n";
 				}
 				$output .= '</div>' . "\n";
 				break;

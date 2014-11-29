@@ -4,12 +4,28 @@
 	<main role="main">
 		<!-- section -->
 		<section>
+			<?php
+			if ( have_posts() ) :
+				// Start the Loop.
+				while ( have_posts() ) : the_post();
 
-			<h1><?php _e( 'Latest Posts', 'html5blank' ); ?></h1>
+					/*
+					 * Include the post format-specific template for the content. If you want to
+					 * use this in a child theme, then include a file called called content-___.php
+					 * (where ___ is the post format) and that will be used instead.
+					 */
+					get_template_part( 'content', get_post_format() );
 
-			<?php get_template_part('loop'); ?>
+				endwhile;
+				// Previous/next post navigation.
+				get_template_part( 'content', 'pagination' );
 
-			<?php get_template_part('pagination'); ?>
+			else :
+				// If no content, include the "No posts found" template.
+				get_template_part( 'content', 'none' );
+
+			endif;
+			?>
 
 		</section>
 		<!-- /section -->
@@ -18,7 +34,5 @@
 
 		<div class="clear"></div>
 	</main>
-
-
 
 <?php get_footer(); ?>

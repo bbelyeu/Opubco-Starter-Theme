@@ -2,35 +2,6 @@
 
 require_once( trailingslashit( get_template_directory() ). 'inc/cmb/custom-meta-boxes.php' );
 
-
-/*------------------------------------*\
-    Slider
-\*------------------------------------*/
-
-function slider_options( array $meta_boxes ) {
-  
-  $fields = array(
-
-  		array( 'id' => 'slider-text',  'name' => 'Slider Text', 'type' => 'textarea', 'desc' => 'Place text content of Slider here!' ),
-  		array( 'id' => 'slider-button',  'name' => 'Slider Button Link', 'type' => 'text', 'placeholder' => 'Place link URL here!' ),
-  		array( 'id' => 'slider-button-text',  'name' => 'Slider Button Text', 'type' => 'text', 'placeholder' => 'Place button text here!' ),
-
-  );
-
-  $meta_boxes[] = array(
-    'title' => 'Slider Options',
-    'pages' => 'slider',
-    'fields' => $fields
-  );
-
-
-  return $meta_boxes;
-
-}
-
-add_filter( 'cmb_meta_boxes', 'slider_options' );
-
-
 /*------------------------------------*\
    Custom Fields
 \*------------------------------------*/

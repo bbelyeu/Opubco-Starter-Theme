@@ -1,20 +1,4 @@
 <?php
-/**
- * A unique identifier is defined to store the options in the database and reference them from the theme.
- * By default it uses the theme name, in lowercase and without spaces, but this can be changed if needed.
- * If the identifier changes, it'll appear as if the options have been reset.
- */
-
-function optionsframework_option_name() {
-
-	// This gets the theme name from the stylesheet
-	$themename = wp_get_theme();
-	$themename = preg_replace("/\W/", "_", strtolower($themename) );
-
-	$optionsframework_settings = get_option( 'optionsframework' );
-	$optionsframework_settings['id'] = $themename;
-	update_option( 'optionsframework', $optionsframework_settings );
-}
 
 /**
  * Defines an array of options that will be used to generate the settings page and be saved in the database.
@@ -166,6 +150,31 @@ function optionsframework_options() {
 		'name' => __('Twitter URL', 'options_framework_theme'),
 		'desc' => __('Enter your Twitter URL.', 'options_framework_theme'),
 		'id' => 'twitter',
+		'type' => 'text');
+	$options[] = array(
+		'name' => __('Pinterest URL', 'options_framework_theme'),
+		'desc' => __('Enter your Pinterest URL.', 'options_framework_theme'),
+		'id' => 'pinterest',
+		'type' => 'text');
+	$options[] = array(
+		'name' => __('YouTube URL', 'options_framework_theme'),
+		'desc' => __('Enter your YouTube URL.', 'options_framework_theme'),
+		'id' => 'youtube',
+		'type' => 'text');
+	$options[] = array(
+		'name' => __('LinkedIn URL', 'options_framework_theme'),
+		'desc' => __('Enter your LinkedIn URL.', 'options_framework_theme'),
+		'id' => 'linkedin',
+		'type' => 'text');
+	$options[] = array(
+		'name' => __('Instagram URL', 'options_framework_theme'),
+		'desc' => __('Enter your Instagram URL.', 'options_framework_theme'),
+		'id' => 'instagram',
+		'type' => 'text');
+	$options[] = array(
+		'name' => __('Google Plus URL', 'options_framework_theme'),
+		'desc' => __('Enter your Google Plus URL.', 'options_framework_theme'),
+		'id' => 'google',
 		'type' => 'text');
 
 	return $options;
