@@ -181,13 +181,12 @@ class opubco_walker_nav_menu extends Walker_Nav_Menu {
 				$attributes .= ' ' . $attr . '="' . $value . '"';
 			}
 		}
-
-		$item_output = $args[ 'before' ];
+		$item_output = $args->before;
 		$item_output .= '<a itemprop=url'. $attributes .'>';
 		/** This filter is documented in wp-includes/post-template.php */
-		$item_output .= $args [ 'link_before' ] . apply_filters( 'the_title', $item->title, $item->ID ) . $args[ 'link_after' ];
+		$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
 		$item_output .= '</a>';
-		$item_output .= $args[ 'after' ];
+		$item_output .= $args->after;
 
 		/**
 		 * Filter a menu item's starting output.
@@ -219,6 +218,8 @@ function opubco_header_scripts()
     	wp_enqueue_script('jquery'); // Enqueue it!
 
         wp_enqueue_script('opubcothemescripts', get_template_directory_uri() . '/js/scripts.js', array( 'jquery' ), '1.0.0', true ); // Custom scripts
+        
+        wp_enqueue_script( 'slicknav', get_template_directory_uri() . '/js/jquery.slicknav.min.js', array( 'jquery' ), true );
 
     }
 
@@ -230,7 +231,7 @@ function opubco_header_scripts()
 function opubco_theme_styles()
 {
 	/* Customize me - http://www.google.com/fonts */
-    wp_enqueue_style( 'googleFonts', '//fonts.googleapis.com/css?family=Lato:400,900|Asap:400,700' );
+    wp_enqueue_style( 'googleFonts', '//fonts.googleapis.com/css?family=Open+Sans:700,800,400|Open+Sans+Condensed:300,700|Oswald:400,700,300' );
 	
 	/* Useful for social icons, list items, etc - http://fortawesome.github.io/Font-Awesome/examples/ */
     wp_enqueue_style( 'fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' );
@@ -243,7 +244,8 @@ function opubco_theme_styles()
 function opubco_register_menu()
 {
     register_nav_menus(array( // Using array to specify more menus if needed
-        'header-menu' => __('Header Menu', 'opubco'), // Main Navigation,
+    	'header-top-nav' => 'Header Top Nav',
+        'header-menu' => __('Header Main Menu', 'opubco'), // Main Navigation,
         'footer-menu' => __('Footer Menu', 'opubco') // Footer Navigation
     ));
 }
