@@ -942,7 +942,8 @@ function opubco_the_content() {
 add_filter( 'optionsframework_page_select', 'opubco_page_select', 15, 3 );
 function opubco_page_select( $option_name, $value, $val ) {
 	$val = !empty( $val ) ? absint( $val ): 0;
-	$pages = wp_dropdown_pages( array( 'depth' => -1, 'selected' => $val, 'echo' => false, 'name' => $option_name . '[home_page_select]', 'id' => 'home_page_select'  ) );
+	$id = !isset( $value[ 'id' ] ) ? 'home_page_select' : $value[ 'id' ];
+	$pages = wp_dropdown_pages( array( 'depth' => -1, 'selected' => $val, 'echo' => false, 'name' => sprintf( '%s[%s]', $option_name, $id ), 'id' => $id  ) );
 	return $pages;
 }
 add_filter( 'of_sanitize_page_select', 'opubco_page_select_sanitization', 10, 2);
