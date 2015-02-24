@@ -508,9 +508,10 @@ jQuery(document).ready(function() {
     CUSTOM H1
 \*------------------------------------*/
 
-function opubco_custom_title($title) {
+function opubco_custom_title($title, $post_id ) {
     global $post;
-
+	if ( is_admin() ) return $title;
+	
     if ( in_the_loop() ) {
 
         if( get_post_meta($post->ID,'custom_h1', true ) ){
@@ -518,6 +519,14 @@ function opubco_custom_title($title) {
         } else{
           return $title;  
         }
+    } else {
+	    $custom_h1 = get_post_meta( $post_id, 'custom_h1', true );
+	    if ( $custom_h1 ) {
+			$custom_h1 = trim( $custom_h1 );
+			if ( !empty( $custom_h1 ) ) {
+				$title = $custom_h1;
+			}
+	    }
     }
 
     return $title;
